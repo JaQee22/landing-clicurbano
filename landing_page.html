@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClicUrbano - Reporta Incidencias en tu Ciudad</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- --- ¡NUEVA FUENTE AÑADIDA! --- -->
+    <link href="https://fonts.googleapis.com/css2?family=Sirin+Stencil&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <!-- 1. Barra de Navegación -->
+    <header class="absolute top-0 left-0 w-full z-10 py-4 px-6 sm:px-12 flex justify-between items-center">
+        <!-- Logo y Nombre -->
+        <a href="#" class="flex items-center space-x-2">
+            <!-- Usamos la URL de tu logo en Firebase Storage -->
+            <!-- --- ¡CAMBIO DE TAMAÑO! --- -->
+            <img class="h-[150px] w-auto" 
+                 src="https://firebasestorage.googleapis.com/v0/b/clicurbano-ec989.firebasestorage.app/o/assets%2Flogo.png?alt=media&token=d3ac2051-7f6d-4f3f-b715-0717ae186d3c" 
+                 alt="Logo ClicUrbano">
+            
+            <!-- --- ¡CAMBIO DE TAMAÑO Y FUENTE! --- -->
+            <span class="font-bold text-5xl text-gray-900" style="font-family: 'Sirin Stencil', cursive;">ClicUrbano</span>
+        </a>
+        
+        <!-- Botón de Descarga 
+        <a href="#descargar" class="hidden sm:inline-block bg-red-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-red-700 transition-colors">
+            Descargar App
+        </a>-->
+    </header>
+
+    <main>
+        
+        <!-- 2. Sección "Hero" (Principal) -->
+        <section class="relative min-h-screen flex items-center justify-center pt-20 pb-10 px-6 overflow-hidden">
+            <!-- Fondo de degradado sutil -->
+            <div class="absolute inset-0 -z-10 h-full w-full bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#fee2e2_100%)]"></div>
+            
+            <div class="container mx-auto flex flex-col-reverse lg:flex-row items-center gap-12">
+                
+                <!-- Columna de Texto -->
+                <div class="lg:w-1/2 text-center lg:text-left">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
+                        Reporta incidencias en tu ciudad.
+                        <span class="text-red-600">En tiempo real.</span>
+                    </h1>
+                    <p class="mt-6 text-lg text-gray-600 max-w-lg mx-auto lg:mx-0">
+                        Únete a ClicUrbano y ayúdanos a construir una mejor comunidad. Reporta baches, fallas en el alumbrado, barreras viales y más, de forma fácil y rápida.
+                    </p>
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <!-- 
+                            ¡IMPORTANTE!
+                            Reemplaza 'href' con el enlace a tu APK subido 
+                        -->
+                        <a href="https://firebasestorage.googleapis.com/v0/b/clicurbano-ec989.firebasestorage.app/o/apk%2Fapp-release.apk?alt=media&token=788451e2-d4cd-488f-b8b3-fa943ee61925
+" class="bg-red-600 text-white font-semibold px-8 py-4 rounded-lg shadow-lg text-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2">
+                            <!-- Ícono de Android -->
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16.2 5.013c-.14.417-.221.848-.221 1.299 0 .452.081.883.221 1.299h-8.4c.14-.416.221-.847.221-1.299 0-.451-.081-.882-.221-1.299h8.4zm-4.103 9.499l-2.73 2.73c-.504.504-1.18.77-1.879.77-.7 0-1.375-.266-1.879-.77l-.631-.631c-.504-.504-.77-1.179-.77-1.879 0-.7.266-1.375.77-1.879l5.06-5.06c.118-.118.239-.234.364-.347V5.013H8.1c-.013 0-.025 0-.038 0-1.168 0-2.203.468-2.951 1.215-.749.749-1.215 1.783-1.215 2.951 0 .013 0 .025 0 .038v8.586c0 .013 0 .025 0 .038 0 1.168.466 2.203 1.215 2.951.748.748 1.783 1.215 2.951 1.215.013 0 .025 0 .038 0h8.586c.013 0 .025 0 .038 0 1.168 0 2.203-.467 2.951-1.215.749-.748 1.215-1.783 1.215-2.951 0-.013 0-.025 0-.038V9.176c-.113.125-.229.246-.347.364l-5.06 5.06c-.504.504-1.179.77-1.879.77-.7 0-1.375-.266-1.879-.77l-2.73-2.73-1.919 1.919c.49.597 1.184 1.002 1.968 1.127l2.671-2.671 2.73 2.73c.189.189.44.293.707.293.267 0 .518-.104.707-.293l2.73-2.73 1.919 1.919c.125-.784.53-1.478 1.127-1.968l-1.919-1.919-2.73 2.73c-.189.189-.44.293.707.293-.267 0-.518-.104-.707-.293l-2.73-2.73 2.671-2.671c.784.125 1.478.53 1.968 1.127l-1.919 1.919z"/></svg>
+                            Descargar para Android
+                        </a>
+                        <a href="#como-funciona" class="bg-gray-100 text-gray-800 font-semibold px-8 py-4 rounded-lg text-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
+                            Aprender Más
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Columna de Imagen (Mock-up del Teléfono) -->
+                <div class="lg:w-1/2 flex justify-center">
+                    <div class="w-[300px] h-[600px] bg-gray-800 rounded-[40px] border-[14px] border-gray-800 shadow-2xl relative">
+                        
+                        <!-- --- ¡CAMBIO AQUÍ! --- -->
+                        <!-- Pantalla del teléfono (ahora un carrusel con imágenes locales) -->
+                        <div class="w-full h-full bg-gray-200 rounded-[26px] overflow-hidden relative">
+                            <!-- Imagen 1: inicio -->
+                            <img src="img/app.jpg" 
+                                 alt="Vista del inicio" 
+                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-100">
+                            <!-- Imagen 2: El Mapa -->
+                            <img src="img/mapa.jpg" 
+                                 alt="Vista del Mapa" 
+                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-100">
+                
+                            <!-- Imagen 2: Formulario de Reporte -->
+                            <img src="img/reporte.jpg"
+                                 alt="Formulario de Reporte"
+                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
+                            <!-- Imagen 2: Formulario de Reporte -->
+                            <img src="img/eporte.jpg"
+                                 alt="Formulario de Reporte"
+                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
+
+
+
+                            <!-- Imagen 3: Mis Reportes -->
+                            <img src="img/misreportes.jpg"
+                                 alt="Lista de Reportes"
+                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
+                        </div>
+                        <!-- --- FIN DEL CAMBIO --- -->
+
+                        <!-- Notch (cámara frontal) -->
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-800 rounded-b-lg"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- ¡NUEVA SECCIÓN "QUIÉNES SOMOS"! --- -->
+        <section id="quienes-somos" class="bg-white py-20 px-6">
+            <div class="container mx-auto max-w-5xl">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Columna de Imagen -->
+                    <div class="order-last lg:order-first">
+                        <img src="img/bache1.jpg"
+                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/9ca3af?text=Nuestra+Misión';"
+                             alt="Una ciudad conectada" 
+                             class="rounded-lg shadow-xl w-full h-full object-cover">
+                    </div>
+
+                    <!-- Columna de Texto -->
+                    <div>
+                        <span class="text-sm font-semibold text-red-600 uppercase">Nuestra Misión</span>
+                        <h2 class="text-3xl font-bold text-gray-900 mt-2">Sobre ClicUrbano</h2>
+                        <p class="mt-4 text-lg text-gray-600">
+                            Somos un equipo apasionado por la tecnología y el desarrollo de nuestras comunidades. 
+                            Nuestra misión es crear un puente directo entre los ciudadanos y las autoridades 
+                            para construir ciudades más seguras, eficientes y colaborativas.
+                        </p>
+                        <p class="mt-4 text-gray-600">
+                            ClicUrbano nació de la simple idea de que un pequeño "clic" puede generar 
+                            un gran cambio. Creemos en el poder de la participación ciudadana para 
+                            transformar nuestro entorno, un reporte a la vez.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- --- FIN DE LA NUEVA SECCIÓN --- -->
+
+
+        <!-- 3. Sección "Cómo Funciona" -->
+        <section id="como-funciona" class="bg-gray-50 py-20 px-6">
+            <div class="container mx-auto max-w-5xl">
+                <h2 class="text-3xl font-bold text-center text-gray-900">¿Cómo Funciona?</h2>
+                <p class="text-center text-lg text-gray-600 mt-4">Reportar es más fácil que nunca.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16">
+                    <!-- Paso 1 -->
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <h3 class="mt-5 text-xl font-semibold">1. Ubica el Problema</h3>
+                        <p class="mt-2 text-gray-500">
+                            La app detecta tu ubicación automáticamente. Solo tienes que estar en el lugar de la incidencia.
+                        </p>
+                    </div>
+                    
+                    <!-- Paso 2 -->
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <h3 class="mt-5 text-xl font-semibold">2. Captura la Evidencia</h3>
+                        <p class="mt-2 text-gray-500">
+                            Toma una foto clara del problema y añade una breve descripción. Presiona "Enviar".
+                        </D>
+                    </div>
+                    
+                    <!-- Paso 3 -->
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="mt-5 text-xl font-semibold">3. Solución en Proceso</h3>
+                        <p class="mt-2 text-gray-500">
+                            Tu reporte aparece en el mapa y es enviado al administrador. Puedes revisar el estado en "Mis Reportes".
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 4. Sección de "Llamada a la Acción" (CTA) Final -->
+        <section id="descargar" class="bg-red-600">
+            <div class="container mx-auto max-w-4xl py-16 px-6 text-center">
+                <h2 class="text-3xl font-bold text-white">
+                    Ayúdanos a mejorar tu ciudad, reporte por reporte.
+                </h2>
+                <p class="mt-4 text-lg text-red-100">
+                    Descarga ClicUrbano hoy mismo y sé parte del cambio.
+                </p>
+                <!-- 
+                    ¡IMPORTANTE!
+                    Reemplaza 'href' con el enlace a tu APK subido 
+                -->
+                <a href="https://firebasestorage.googleapis.com/v0/b/clicurbano-ec989.firebasestorage.app/o/apk%2Fapp-release.apk?alt=media&token=788451e2-d4cd-488f-b8b3-fa943ee61925
+" class="mt-8 inline-block bg-white text-red-600 font-semibold px-8 py-3 rounded-lg shadow-lg text-lg hover:bg-gray-100 transition-colors">
+                    Descargar APK para Android
+                </a>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- 5. Footer -->
+    <footer class="bg-gray-800 py-12 px-6">
+        <div class="container mx-auto text-center text-gray-400">
+            <p>&copy; 2.25 ClicUrbano. Todos los derechos reservados.</p>
+            <p class="mt-2 text-sm">Un proyecto de ciudad colaborativa.</p>
+        </div>
+    </footer>
+
+    <!-- --- ¡NUEVO SCRIPT PARA EL CARRUSEL! --- -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            if (slides.length === 0) return; // No hacer nada si no hay slides
+
+            let currentSlide = 0;
+            
+            setInterval(() => {
+                // Oculta el slide actual
+                slides[currentSlide].classList.remove('opacity-100');
+                slides[currentSlide].classList.add('opacity-0');
+                
+                // Calcula el siguiente slide
+                currentSlide = (currentSlide + 1) % slides.length;
+                
+                // Muestra el siguiente slide
+                slides[currentSlide].classList.remove('opacity-0');
+                slides[currentSlide].classList.add('opacity-100');
+            }, 3000); // Cambia cada 3 segundos (3000 milisegundos)
+        });
+    </script>
+    <!-- --- FIN DEL SCRIPT --- -->
+
+</body>
+</html>
