@@ -29,25 +29,30 @@
         <!-- Logo y Nombre -->
         <a href="#" class="flex items-center space-x-2">
             <!-- Usamos la URL de tu logo en Firebase Storage -->
-            <!-- --- ¡CAMBIO DE TAMAÑO! --- -->
-            <img class="h-[150px] w-auto" 
+            
+            <!-- --- ¡CAMBIO DE TAMAÑO RESPONSIVO! --- -->
+            <!-- h-24 (96px) en móvil, lg:h-[150px] (150px) en pantallas grandes -->
+            <img class="h-24 lg:h-[150px] w-auto" 
                  src="https://firebasestorage.googleapis.com/v0/b/clicurbano-ec989.firebasestorage.app/o/assets%2Flogo.png?alt=media&token=d3ac2051-7f6d-4f3f-b715-0717ae186d3c" 
                  alt="Logo ClicUrbano">
             
-            <!-- --- ¡CAMBIO DE TAMAÑO Y FUENTE! --- -->
-            <span class="font-bold text-5xl text-gray-900" style="font-family: 'Sirin Stencil', cursive;">ClicUrbano</span>
+            <!-- --- ¡CAMBIO DE TAMAÑO RESPONSIVO! --- -->
+            <!-- text-3xl (30px) en móvil, lg:text-5xl (48px) en pantallas grandes -->
+            <span class="font-bold text-3xl lg:text-5xl text-gray-900" style="font-family: 'Sirin Stencil', cursive;">ClicUrbano</span>
         </a>
         
         <!-- Botón de Descarga 
-        <a href="#descargar" class="hidden sm:inline-block bg-red-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-red-700 transition-colors">
-            Descargar App
-        </a>-->
+         <a href="#descargar" class="hidden sm:inline-block bg-red-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-red-700 transition-colors">
+             Descargar App
+         </a>-->
     </header>
 
     <main>
         
         <!-- 2. Sección "Hero" (Principal) -->
-        <section class="relative min-h-screen flex items-center justify-center pt-20 pb-10 px-6 overflow-hidden">
+        <!-- --- ¡CAMBIO DE PADDING SUPERIOR (pt-40)! --- -->
+        <!-- pt-40 (160px) en móvil, lg:pt-20 (80px) en pantallas grandes -->
+        <section class="relative min-h-screen flex items-center justify-center pt-40 lg:pt-20 pb-10 px-6 overflow-hidden">
             <!-- Fondo de degradado sutil -->
             <div class="absolute inset-0 -z-10 h-full w-full bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#fee2e2_100%)]"></div>
             
@@ -89,23 +94,21 @@
                             <img src="img/app.jpg" 
                                  alt="Vista del inicio" 
                                  class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-100">
-                            <!-- Imagen 2: El Mapa -->
+                            <!-- Imagen 2: El Mapa (Corregido a opacity-0) -->
                             <img src="img/mapa.jpg" 
                                  alt="Vista del Mapa" 
-                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-100">
-                
-                            <!-- Imagen 2: Formulario de Reporte -->
+                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
+                        
+                            <!-- Imagen 3: Formulario de Reporte -->
                             <img src="img/reporte.jpg"
                                  alt="Formulario de Reporte"
                                  class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
-                            <!-- Imagen 2: Formulario de Reporte -->
+                            <!-- Imagen 4: Formulario de Reporte (Duplicada?) -->
                             <img src="img/eporte.jpg"
                                  alt="Formulario de Reporte"
                                  class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
 
-
-
-                            <!-- Imagen 3: Mis Reportes -->
+                            <!-- Imagen 5: Mis Reportes -->
                             <img src="img/misreportes.jpg"
                                  alt="Lista de Reportes"
                                  class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
