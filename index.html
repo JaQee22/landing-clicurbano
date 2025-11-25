@@ -1,255 +1,400 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es" class="h-full bg-gray-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClicUrbano - Reporta Incidencias en tu Ciudad</title>
+    <title>Panel de Administrador - ClicUrbano</title>
+    <!-- 1. Tailwind CSS para estilos rápidos --><script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Font (Inter) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- --- ¡NUEVA FUENTE AÑADIDA! --- -->
-    <link href="https://fonts.googleapis.com/css2?family=Sirin+Stencil&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-</head>
-<body class="bg-white text-gray-800">
-
-    <!-- 1. Barra de Navegación -->
-    <header class="absolute top-0 left-0 w-full z-10 py-4 px-6 sm:px-12 flex justify-between items-center">
-        <!-- Logo y Nombre -->
-        <a href="#" class="flex items-center space-x-2">
-            <!-- Usamos la URL de tu logo en Firebase Storage -->
-            
-            <!-- --- ¡CAMBIO DE TAMAÑO RESPONSIVO! --- -->
-            <!-- h-24 (96px) en móvil, lg:h-[150px] (150px) en pantallas grandes -->
-            <img class="h-24 lg:h-[150px] w-auto" 
-                 src="https://firebasestorage.googleapis.com/v0/b/clicurbano-ec989.firebasestorage.app/o/assets%2Flogo.png?alt=media&token=d3ac2051-7f6d-4f3f-b715-0717ae186d3c" 
-                 alt="Logo ClicUrbano">
-            
-            <!-- --- ¡CAMBIO DE TAMAÑO RESPONSIVO! --- -->
-            <!-- text-3xl (30px) en móvil, lg:text-5xl (48px) en pantallas grandes -->
-            <span class="font-bold text-3xl lg:text-5xl text-gray-900" style="font-family: 'Sirin Stencil', cursive;">ClicUrbano</span>
-        </a>
+    <!-- 2. SDKs de Firebase (ES Modules) --><script type="module">
+        // Importamos los servicios que necesitamos
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         
-        <!-- Botón de Descarga 
-         <a href="#descargar" class="hidden sm:inline-block bg-red-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-red-700 transition-colors">
-             Descargar App
-         </a>-->
-    </header>
-
-    <main>
+        // --- ¡CAMBIO AQUÍ! ---
+        // Añadimos 'setPersistence' y 'browserSessionPersistence'
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        // --- FIN DEL CAMBIO ---
         
-        <!-- 2. Sección "Hero" (Principal) -->
-        <!-- --- ¡CAMBIO DE PADDING SUPERIOR (pt-40)! --- -->
-        <!-- pt-40 (160px) en móvil, lg:pt-20 (80px) en pantallas grandes -->
-        <section class="relative min-h-screen flex items-center justify-center pt-40 lg:pt-20 pb-10 px-6 overflow-hidden">
-            <!-- Fondo de degradado sutil -->
-            <div class="absolute inset-0 -z-10 h-full w-full bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#fee2e2_100%)]"></div>
-            
-            <div class="container mx-auto flex flex-col-reverse lg:flex-row items-center gap-12">
-                
-                <!-- Columna de Texto -->
-                <div class="lg:w-1/2 text-center lg:text-left">
-                    <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
-                        Reporta incidencias en tu ciudad.
-                        <span class="text-red-600">En tiempo real.</span>
-                    </h1>
-                    <p class="mt-6 text-lg text-gray-600 max-w-lg mx-auto lg:mx-0">
-                        Únete a ClicUrbano y ayúdanos a construir una mejor comunidad. Reporta baches, fallas en el alumbrado, inundaciones, cortes de luz-agua y más, de forma fácil y rápida.
-                    </p>
-                    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <!-- 
-                        
-                            Reemplaza 'href' con el enlace a tu APK subido 
-                        -->
-                        <a href="https://firebasestorage.googleapis.com/v0/b/clicurbano-ec989.firebasestorage.app/o/apk%2Fapp-release.apk?alt=media&token=e52a938b-d1ab-4b1e-b650-5e0b4042a142" class="bg-red-600 text-white font-semibold px-8 py-4 rounded-lg shadow-lg text-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2">
-                            <!-- Ícono de Android -->
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16.2 5.013c-.14.417-.221.848-.221 1.299 0 .452.081.883.221 1.299h-8.4c.14-.416.221-.847.221-1.299 0-.451-.081-.882-.221-1.299h8.4zm-4.103 9.499l-2.73 2.73c-.504.504-1.18.77-1.879.77-.7 0-1.375-.266-1.879-.77l-.631-.631c-.504-.504-.77-1.179-.77-1.879 0-.7.266-1.375.77-1.879l5.06-5.06c.118-.118.239-.234.364-.347V5.013H8.1c-.013 0-.025 0-.038 0-1.168 0-2.203.468-2.951 1.215-.749.749-1.215 1.783-1.215 2.951 0 .013 0 .025 0 .038v8.586c0 .013 0 .025 0 .038 0 1.168.466 2.203 1.215 2.951.748.748 1.783 1.215 2.951 1.215.013 0 .025 0 .038 0h8.586c.013 0 .025 0 .038 0 1.168 0 2.203-.467 2.951-1.215.749-.748 1.215-1.783 1.215-2.951 0-.013 0-.025 0-.038V9.176c-.113.125-.229.246-.347.364l-5.06 5.06c-.504.504-1.179.77-1.879.77-.7 0-1.375-.266-1.879-.77l-2.73-2.73-1.919 1.919c.49.597 1.184 1.002 1.968 1.127l2.671-2.671 2.73 2.73c.189.189.44.293.707.293.267 0 .518-.104.707-.293l2.73-2.73 1.919 1.919c.125-.784.53-1.478 1.127-1.968l-1.919-1.919-2.73 2.73c-.189.189-.44.293.707.293-.267 0-.518-.104-.707-.293l-2.73-2.73 2.671-2.671c.784.125 1.478.53 1.968 1.127l-1.919 1.919z"/></svg>
-                            Descargar para Android
-                        </a>
-                        <a href="#como-funciona" class="bg-gray-100 text-gray-800 font-semibold px-8 py-4 rounded-lg text-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
-                            Aprender Más
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Columna de Imagen (Mock-up del Teléfono) -->
-                <div class="lg:w-1/2 flex justify-center">
-                    <div class="w-[300px] h-[600px] bg-gray-800 rounded-[40px] border-[14px] border-gray-800 shadow-2xl relative">
-                        
-                        <!-- --- ¡CAMBIO AQUÍ! --- -->
-                        <!-- Pantalla del teléfono (ahora un carrusel con imágenes locales) -->
-                        <div class="w-full h-full bg-gray-200 rounded-[26px] overflow-hidden relative">
-                            <!-- Imagen 1: inicio -->
-                            <img src="img/app.jpg" 
-                                 alt="Vista del inicio" 
-                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-100">
-                            <!-- Imagen 2: El Mapa (Corregido a opacity-0) -->
-                            <img src="img/mapa.jpg" 
-                                 alt="Vista del Mapa" 
-                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
-                        
-                            <!-- Imagen 3: Formulario de Reporte -->
-                            <img src="img/reporte.jpg"
-                                 alt="Formulario de Reporte"
-                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
-                            <!-- Imagen 4: Formulario de Reporte (Duplicada?) -->
-                            <img src="img/eporte.jpg"
-                                 alt="Formulario de Reporte"
-                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
-
-                            <!-- Imagen 5: Mis Reportes -->
-                            <img src="img/misreportes.jpg"
-                                 alt="Lista de Reportes"
-                                 class="slide w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out opacity-0">
-                        </div>
-                        <!-- --- FIN DEL CAMBIO --- -->
-
-                        <!-- Notch (cámara frontal) -->
-                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-800 rounded-b-lg"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- --- ¡NUEVA SECCIÓN "QUIÉNES SOMOS"! --- -->
-        <section id="quienes-somos" class="bg-white py-20 px-6">
-            <div class="container mx-auto max-w-5xl">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <!-- Columna de Imagen -->
-                    <div class="order-last lg:order-first">
-                        <img src="img/bache1.jpg"
-                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/9ca3af?text=Nuestra+Misión';"
-                             alt="Una ciudad conectada" 
-                             class="rounded-lg shadow-xl w-full h-full object-cover">
-                    </div>
-
-                    <!-- Columna de Texto -->
-                    <div>
-                        <span class="text-sm font-semibold text-red-600 uppercase">Nuestra Misión</span>
-                        <h2 class="text-3xl font-bold text-gray-900 mt-2">Sobre ClicUrbano</h2>
-                        <p class="mt-4 text-lg text-gray-600">
-                            Somos un equipo apasionado por la tecnología y el desarrollo de nuestras comunidades. 
-                            Nuestra misión es crear un puente directo entre los ciudadanos y las autoridades 
-                            para construir ciudades más seguras, eficientes y colaborativas.
-                        </p>
-                        <p class="mt-4 text-gray-600">
-                            ClicUrbano nació de la simple idea de que un pequeño "clic" puede generar 
-                            un gran cambio. Creemos en el poder de la participación ciudadana para 
-                            transformar nuestro entorno, un reporte a la vez.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- --- FIN DE LA NUEVA SECCIÓN --- -->
-
-
-        <!-- 3. Sección "Cómo Funciona" -->
-        <section id="como-funciona" class="bg-gray-50 py-20 px-6">
-            <div class="container mx-auto max-w-5xl">
-                <h2 class="text-3xl font-bold text-center text-gray-900">¿Cómo Funciona?</h2>
-                <p class="text-center text-lg text-gray-600 mt-4">Reportar es más fácil que nunca.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16">
-                    <!-- Paso 1 -->
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold">1. Ubica el Problema</h3>
-                        <p class="mt-2 text-gray-500">
-                            La app detecta tu ubicación automáticamente. Solo tienes que estar en el lugar de la incidencia.
-                        </p>
-                    </div>
-                    
-                    <!-- Paso 2 -->
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold">2. Captura la Evidencia</h3>
-                        <p class="mt-2 text-gray-500">
-                            Toma una foto clara del problema y añade una breve descripción. Presiona "Enviar".
-                        </D>
-                    </div>
-                    
-                    <!-- Paso 3 -->
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold">3. Solución en Proceso</h3>
-                        <p class="mt-2 text-gray-500">
-                            Tu reporte aparece en el mapa y es enviado a la autoridad correspondiente. Puedes revisar el estado en "Mis Reportes".
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        // Importamos Firestore
+        import { getFirestore, collection, onSnapshot, doc, getDoc, updateDoc, query, orderBy, where, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
-        <!-- 4. Sección de "Llamada a la Acción" (CTA) Final -->
-        <section id="descargar" class="bg-red-600">
-            <div class="container mx-auto max-w-4xl py-16 px-6 text-center">
-                <h2 class="text-3xl font-bold text-white">
-                    Ayúdanos a mejorar tu ciudad, reporte por reporte.
-                </h2>
-                <p class="mt-4 text-lg text-red-100">
-                    Descarga ClicUrbano hoy mismo y sé parte del cambio.
-                </p>
-                <!-- 
-                    ¡IMPORTANTE!
-                    Reemplaza 'href' con el enlace a tu APK subido 
-                -->
-                <a href="https://firebasestorage.googleapis.com/v0/b/clicurbano-ec989.firebasestorage.app/o/apk%2Fapp-release.apk?alt=media&token=e52a938b-d1ab-4b1e-b650-5e0b4042a142" class="mt-8 inline-block bg-white text-red-600 font-semibold px-8 py-3 rounded-lg shadow-lg text-lg hover:bg-gray-100 transition-colors">
-                    Descargar APK para Android
-                </a>
-            </div>
-        </section>
+        // Importamos Storage
+        import { getStorage, ref, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAoYm_Jc358AkK3MJf-ZJb9AZkxEi1V6Co", // <--- REEMPLAZAR
+            authDomain: "clicurbano-ec989.firebaseapp.com", // <--- REEMPLAZAR
+            projectId: "clicurbano-ec989", // <-- ¡Este ya lo sabemos!
+            storageBucket: "clicurbano-ec989.firebasestorage.app", // <--- REEMPLAZAR
+            messagingSenderId: "356402457239", // <--- REEMPLAZAR
+            appId: "1:356402457239:android:01b5287b8d941e4b7797d2" // <--- REEMPLAZAR
+            // (El appId de 'web' puede ser diferente al de 'android',
+            // búscalo en la configuración de tu proyecto en Firebase)
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Referencias a los elementos de la página
+        const loginSection = document.getElementById('login-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const loginForm = document.getElementById('login-form');
+        const loginEmail = document.getElementById('login-email');
+        const loginPassword = document.getElementById('login-password');
+        const loginError = document.getElementById('login-error');
+        const currentUserEmail = document.getElementById('current-user-email');
+        const logoutButton = document.getElementById('logout-button');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const reportsTableBody = document.getElementById('reports-table-body');
         
-    </main>
+        // Referencia al display de comuna
+        const comunaDisplay = document.getElementById('comuna-display');
 
-    <!-- 5. Footer -->
-    <footer class="bg-gray-800 py-12 px-6">
-        <div class="container mx-auto text-center text-gray-400">
-            <p>&copy; 2.25 ClicUrbano. Todos los derechos reservados.</p>
-            <p class="mt-2 text-sm">Un proyecto de ciudad colaborativa.</p>
-        </div>
-    </footer>
+        // --- LÓGICA DE AUTENTICACIÓN (Actualizada con Persistencia) ---
 
-    <!-- --- ¡NUEVO SCRIPT PARA EL CARRUSEL! --- -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.slide');
-            if (slides.length === 0) return; // No hacer nada si no hay slides
+        // 1. Escuchar el envío del formulario de login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            loginError.classList.add('hidden'); 
+            const email = loginEmail.value;
+            const password = loginPassword.value;
 
-            let currentSlide = 0;
-            
-            setInterval(() => {
-                // Oculta el slide actual
-                slides[currentSlide].classList.remove('opacity-100');
-                slides[currentSlide].classList.add('opacity-0');
-                
-                // Calcula el siguiente slide
-                currentSlide = (currentSlide + 1) % slides.length;
-                
-                // Muestra el siguiente slide
-                slides[currentSlide].classList.remove('opacity-0');
-                slides[currentSlide].classList.add('opacity-100');
-            }, 3000); // Cambia cada 3 segundos (3000 milisegundos)
+            try {
+                // --- ¡CAMBIO AQUÍ! ---
+                // Configurar la persistencia a 'SESSION' antes de iniciar sesión.
+                // Esto asegura que al cerrar la pestaña, se cierre la sesión.
+                await setPersistence(auth, browserSessionPersistence);
+                // --- FIN DEL CAMBIO ---
+
+                await signInWithEmailAndPassword(auth, email, password);
+                // El 'onAuthStateChanged' se encargará del resto
+            } catch (error) {
+                console.error("Error de login:", error.message);
+                loginError.textContent = "Error: Usuario o contraseña incorrectos.";
+                loginError.classList.remove('hidden');
+            }
         });
-    </script>
-    <!-- --- FIN DEL SCRIPT --- -->
 
-</body>
+        // 2. Escuchar el botón de cerrar sesión
+        logoutButton.addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // 3. Escuchador principal de estado (Login / Logout)
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Usuario ha iniciado sesión
+                loadingIndicator.textContent = 'Verificando permisos...';
+                loadingIndicator.classList.remove('hidden');
+                
+                // Buscamos el documento del admin
+                const adminDocRef = doc(db, 'administrators', user.email);
+                const adminDocSnap = await getDoc(adminDocRef);
+
+                if (adminDocSnap.exists()) {
+                    const adminData = adminDocSnap.data();
+                    const userRole = adminData.role;
+                    const userComuna = adminData.comuna_asignada;
+                    
+                    console.log(`Admin ${user.email} logueado. Rol: ${userRole}, Comuna: ${userComuna}`);
+
+                    // Mostrar comuna si corresponde
+                    if (userRole === 'admin_comuna' && userComuna) {
+                        comunaDisplay.textContent = `(Comuna: ${userComuna})`;
+                        comunaDisplay.classList.remove('hidden');
+                    } else {
+                        comunaDisplay.classList.add('hidden');
+                    }
+
+                    // Mostrar dashboard
+                    loginSection.classList.add('hidden'); 
+                    dashboardSection.classList.remove('hidden'); 
+                    currentUserEmail.textContent = user.email;
+                    loadReports(userRole, userComuna);
+                    
+                } else {
+                    console.error("Error: El usuario no tiene permisos de administrador.");
+                    loginError.textContent = "Error: No tienes permisos para acceder a este panel.";
+                    loginError.classList.remove('hidden');
+                    signOut(auth);
+                }
+                
+            } else {
+                // Usuario ha cerrado sesión
+                loginSection.classList.remove('hidden'); 
+                dashboardSection.classList.add('hidden'); 
+                currentUserEmail.textContent = '';
+                reportsTableBody.innerHTML = '';
+                comunaDisplay.classList.add('hidden');
+            }
+        });
+
+        // --- LÓGICA DEL DASHBOARD ---
+
+        // 1. Cargar y mostrar los reportes
+        function loadReports(role, comuna) {
+            loadingIndicator.textContent = 'Cargando reportes...';
+            reportsTableBody.innerHTML = '';
+
+            let reportsQuery;
+
+            if (role === 'superadmin') {
+                reportsQuery = query(collection(db, 'reports'), orderBy('timestamp', 'desc'));
+            } else if (role === 'admin_comuna' && comuna) {
+                reportsQuery = query(
+                    collection(db, 'reports'),
+                    where('comuna', '==', comuna),
+                    orderBy('timestamp', 'desc')
+                );
+            } else {
+                loadingIndicator.textContent = 'Error: Tu usuario admin no tiene una comuna asignada.';
+                return;
+            }
+
+            onSnapshot(reportsQuery, (snapshot) => {
+                loadingIndicator.classList.add('hidden'); 
+                reportsTableBody.innerHTML = ''; 
+
+                if (snapshot.empty) {
+                    reportsTableBody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500">No hay reportes para tu comuna.</td></tr>';
+                    return;
+                }
+
+                snapshot.forEach(docSnap => {
+                    const report = docSnap.data();
+                    const reportId = docSnap.id; 
+                    const imageFileName = report.imageFileName || '';
+
+                    let formattedDate = 'N/A';
+                    if (report.timestamp) {
+                        formattedDate = new Date(report.timestamp.seconds * 1000).toLocaleString('es-CL');
+                    }
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="${report.imageUrl || ''}" target="_blank">
+                                <img src="${report.imageUrl || ''}" alt="Evidencia" class="h-16 w-16 object-cover rounded-md hover:scale-110 transition-transform">
+                            </a>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900">${report.descripcion || 'N/A'}</div>
+                            <div class="text-sm text-gray-500">Comuna: ${report.comuna || 'N/A'}</div>
+                            <div class="text-sm text-gray-500">Fecha: ${formattedDate}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${report.userRUT || 'N/A'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            ${createStatusBadge(report.estado || 'Pendiente')}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <div class="flex items-center space-x-2">
+                                <select data-id="${reportId}" class="status-select rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500">
+                                    <option value="Pendiente" ${report.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                                    <option value="En Proceso" ${report.estado === 'En Proceso' ? 'selected' : ''}>En Proceso</option>
+                                    <option value="Finalizado" ${report.estado === 'Finalizado' ? 'selected' : ''}>Finalizado</option>
+                                </select>
+                                
+                                <button data-id="${reportId}" data-image="${imageFileName}" class="delete-button text-gray-400 hover:text-red-600 p-1 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 6h6v10H7V6zm2 2v6h2V8H9z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    reportsTableBody.appendChild(row);
+                });
+
+                document.querySelectorAll('.status-select').forEach(select => {
+                    select.addEventListener('change', (e) => {
+                        const newStatus = e.target.value;
+                        const docId = e.target.dataset.id;
+                        updateReportStatus(docId, newStatus);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-button').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const reportId = e.currentTarget.dataset.id;
+                        const imageFileName = e.currentTarget.dataset.image;
+                        _deleteReport(reportId, imageFileName);
+                    });
+                });
+
+            }, (error) => {
+                console.error("Error al cargar reportes: ", error);
+                if (error.code === 'failed-precondition') {
+                     loadingIndicator.textContent = 'Error: Falta un índice. Revisa la consola (F12).';
+                } else if (error.code === 'permission-denied') {
+                     loadingIndicator.textContent = 'Error: Permisos denegados.';
+                } else {
+                     loadingIndicator.textContent = 'Error al cargar reportes.';
+                }
+            });
+        }
+
+        // --- Función de Borrado ---
+        async function _deleteReport(reportId, imageFileName) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este reporte? Esta acción no se puede deshacer.')) {
+                return;
+            }
+            console.log(`Eliminando reporte ${reportId}`);
+            try {
+                if (imageFileName) {
+                    const imageRef = ref(storage, `report_images/${imageFileName}`);
+                    await deleteObject(imageRef);
+                }
+                const reportRef = doc(db, 'reports', reportId);
+                await deleteDoc(reportRef);
+            } catch (error) {
+                console.error("Error al eliminar: ", error);
+                if (error.code !== 'storage/object-not-found') {
+                    alert("Error: " + error.message);
+                } else {
+                    // Si la imagen no existe, borramos el documento igual
+                    try {
+                        await deleteDoc(doc(db, 'reports', reportId));
+                    } catch (e) {
+                        alert("Error: " + e.message);
+                    }
+                }
+            }
+        }
+
+        // --- Función de Actualizar Estado ---
+        async function updateReportStatus(docId, newStatus) {
+            console.log(`Actualizando ${docId} a ${newStatus}`);
+            const reportRef = doc(db, 'reports', docId); 
+            try {
+                await updateDoc(reportRef, {
+                    estado: newStatus
+                });
+                console.log("¡Estado actualizado!");
+            } catch (error) {
+                console.error("Error al actualizar: ", error);
+            }
+        }
+        
+        function createStatusBadge(status) {
+            let colorClasses = 'bg-gray-100 text-gray-800'; 
+            if (status === 'Pendiente') colorClasses = 'bg-red-100 text-red-800';
+            if (status === 'En Proceso') colorClasses = 'bg-yellow-100 text-yellow-800';
+            if (status === 'Finalizado') colorClasses = 'bg-green-100 text-green-800';
+            
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${colorClasses}">
+                        ${status}
+                    </span>`;
+        }
+    </script>
+</head>
+<body class="h-full bg-gray-100 font-sans">
+    
+    <!-- Contenedor Principal --><div class="min-h-full">
+
+        <!-- SECCIÓN DE LOGIN (Visible por defecto) -->
+        <div id="login-section" class="py-12 sm:px-6 lg:px-8">
+            
+            <!-- Logo Arriba Izquierda -->
+            <div class="px-4 sm:px-6 lg:px-8">
+                <img class="h-[250px] w-auto" 
+                     src="https://firebasestorage.googleapis.com/v0/b/clicurbano-ec989.firebasestorage.app/o/assets%2Flogo.png?alt=media&token=d3ac2051-7f6d-4f3f-b715-0717ae186d3c" 
+                     alt="Logo ClicUrbano">
+            </div>
+            
+            <!-- Título centrado -->
+            <div class="sm:mx-auto sm:w-full sm:max-w-md">
+                <h2 class="mt-6 text-center text-4xl font-extrabold text-gray-900">
+                    Panel de Administración
+                </h2>
+            </div>
+
+            <!-- Formulario centrado -->
+            <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                    <form id="login-form" class="space-y-6">
+                        <div>
+                            <label for="login-email" class="block text-sm font-medium text-gray-700"> Correo Electrónico </label>
+                            <div class="mt-1">
+                                <input id="login-email" name="email" type="email" autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="login-password" class="block text-sm font-medium text-gray-700"> Contraseña </label>
+                            <div class="mt-1">
+                                <input id="login-password" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Mensaje de Error --><div id="login-error" class="hidden text-sm text-red-600 rounded-md bg-red-50 p-3"></div>
+
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Ingresar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DEL DASHBOARD (Oculta por defecto) --><div id="dashboard-section" class="hidden">
+            <header class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                    
+                    <!-- Div para alinear el título y la comuna -->
+                    <div class="flex items-baseline space-x-3">
+                        <h1 class="text-xl font-bold text-gray-900">
+                            Gestión de Reportes
+                        </h1>
+                        <!-- Este span mostrará la comuna -->
+                        <span id="comuna-display" class="hidden text-lg font-medium text-red-600"></span>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <span class="text-sm text-gray-600 mr-3">
+                            Usuario: <span id="current-user-email" class="font-medium"></span>
+                        </span>
+                        <button id="logout-button" type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+            </header>
+            <main>
+                <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                    <div class="px-4 py-6 sm:px-0">
+                        <div class="flex flex-col">
+                            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Foto</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción / Comuna / Fecha</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario (RUT)</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="reports-table-body" class="bg-white divide-y divide-gray-200">
+                                                <!-- Las filas de reportes se cargarán aquí con JS --></tbody>
+                                        </table>
+                                        <div id="loading-indicator" class="hidden p-4 text-center text-gray-500">
+                                            Cargando...
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+        </div>
+    </body>
 </html>
